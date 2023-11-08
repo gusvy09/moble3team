@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>화재감지 CCTV</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&family=Roboto:wght@500;700;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="../static/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="../static/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="../static/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Topbar Start -->
+    <div class="container-fluid bg-dark px-5">
+        <div class="row gx-4 d-none d-lg-flex">
+            <div class="col-lg-6 text-start">
+                <div class="h-100 d-inline-flex align-items-center py-3 me-4">
+                    <div class="btn-sm-square rounded-circle bg-primary me-2">
+                        <small class="fa fa-map-marker-alt text-white"></small>
+                    </div>
+                    <small>천안 동남구 대흥로 255</small>
+                </div>
+                <div class="h-100 d-inline-flex align-items-center py-3">
+                    <div class="btn-sm-square rounded-circle bg-primary me-2">
+                        <small class="fa fa-envelope-open text-white"></small>
+                    </div>
+                    <small>wnqktmvb@naver.com</small>
+                </div>
+            </div>
+            <div class="col-lg-6 text-end">
+                <div class="h-100 d-inline-flex align-items-center py-3 me-4">
+                    <div class="btn-sm-square rounded-circle bg-primary me-2">
+                        <small class="fa fa-phone-alt text-white"></small>
+                    </div>
+                    <small>010-3048-8258</small>
+                </div>
+                <div class="h-100 d-inline-flex align-items-center py-3">
+                    <div class="btn-sm-square rounded-circle bg-primary me-2">
+                        <small class="far fa-clock text-white"></small>
+                    </div>
+                    <small>Mon - Fri : 10AM - 7PM</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid bg-light overflow-hidden px-lg-0">
+        <div class="container quote px-lg-0">
+            <div class="row g-0 mx-lg-0">
+                <div class="col-lg-6 ps-lg-0" style="min-height: 400px;">
+                    <div class="position-relative h-100">
+                        <img class="position-absolute img-fluid w-100 h-100" src="../static/img/quote.jpg"
+                            style="object-fit: cover;" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-6 quote-text py-5 wow fadeIn" data-wow-delay="0.5s">
+                    <div class="p-lg-5 pe-lg-0">
+                        <div class="bg-primary mb-3" style="width: 60px; height: 2px;"></div>
+                        <h1 class="display-5 mb-5">화재감지 CCTV</h1>
+                        <p class="mb-4 pb-2"></p>
+                        <form>
+                            <div class="row g-3">
+                                <div class="col-12 ">
+                                    <input type="text" class="form-control border-0" id="input_id" placeholder="아이디"
+                                        style="height: 55px;">
+                                </div>
+                                <div class="col-12">
+                                    <input type="password" class="form-control border-0" id="input_pw" placeholder="비밀번호"
+                                        style="height: 55px;">
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="remember_user">
+                                    <label class="form-check-label" for="remember_user">아이디/비밀번호 저장</label>
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn btn-primary w-100 py-3" type="submit" id="inlogin">로그인</button>
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn btn-primary w-100 py-3" type="button"
+                                        id="inregister">회원가입</button>
+                                </div>
+                                <div class="btn" type="button" onclick="findinfo()" id="find_info">아이디/비밀번호 찾기</div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+    <!--Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
+    </div>
+    </div>
+    </div>
+    </div> -->
+    <!-- Copyright End -->
+    <script> 
+        // 로그인 클릭 시
+        document.getElementById("inlogin").addEventListener("click",function(){
+        var info_user_id = document.getElementById("input_id").value;
+        var info_user_pw = document.getElementById("input_pw").value;
+        $.ajax({
+            type: "POST",
+            url: "/",
+            data: { input_id: info_user_id,
+                    input_pw: info_user_pw},
+            success: function(response){
+                if(response['login_result']=="duplicate"){
+                    // 로그인 성공 시
+                    alert(response['output_username']+"님 환영합니다.");
+                    window.location.href = "/login?name="+response['output_username']
+                }
+                else if(response['login_result']=="wrong_pw"){
+                    // 비밀번호 틀렸을 때
+                    alert("비밀번호가 일치하지 않음");
+                }
+                else{
+                    // 아이디를 틀렸을 때
+                    alert("존재하지 않는 아이디입니다.");
+                }
+            }
+        });
+        event.preventDefault();
+    });
+    </script>
+    <script>
+        // 체크 박스 요소와 체크 여부를 저장하는 변수
+        var rememberCheckbox = document.getElementById("remember_user");
+        var save_id = document.getElementById("input_id");
+        var save_pw = document.getElementById("input_pw");
+    
+        // 페이지 로드 시, 저장된 아이디가 있다면 체크 박스를 체크합니다
+        var savedid = localStorage.getItem("saved_id");
+        var savedpw = localStorage.getItem("saved_pw");
+
+        if (savedid) {
+            rememberCheckbox.checked = true;
+            save_id.value = savedid;
+            save_pw.value = savedpw;
+        }
+    
+        // 체크 박스 상태 변경 시 호출되는 함수
+        rememberCheckbox.addEventListener("change", function () {
+            if (rememberCheckbox.checked) {
+                // 체크 박스가 선택되면 아이디를 저장
+                localStorage.setItem("saved_id", save_id.value);
+                localStorage.setItem("saved_pw", save_pw.value);
+            }
+            else{
+                // 체크 박스가 선택 해제되면 저장된 아이디를 제거
+                localStorage.removeItem("saved_id");    
+                localStorage.removeItem("saved_pw");              
+            }
+        });
+    </script>
+    <script>
+        // 회원가입 클릭 시
+        document.getElementById("inregister").addEventListener("click", function () {
+            
+            window.location.href = "/register"
+        }); 
+    </script>
+    <script>
+        function findinfo(){
+            // 팝업 창의 크기
+            var popupwidth = 600;
+            var popupheight = 580;
+            // 팝업 창의 위치
+            var left = (window.innerWidth - popupwidth )/2;
+            var top = (window.innerHeight - popupheight)/2;
+            var findpopup = window.open('/find', '아이디/비밀번호 찾기', 'width=' + popupwidth + ', height=' + popupheight + ', left=' + left + ', top=' + top);
+        }
+    </script>
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/lib/wow/wow.min.js"></script>
+    <script src="../static/lib/counterup/counterup.min.js"></script>
+    <script src="../static/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="../static/lib/isotope/isotope.pkgd.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="../static/js/main.js"></script>
+</body>
+
+</html>

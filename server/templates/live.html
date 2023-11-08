@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>실시간 영상</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&family=Roboto:wght@500;700;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="../static/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="../static/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="../static/css/style.css" rel="stylesheet">
+    <link href="../static/css/style1.css" rel="stylesheet">
+
+    
+
+</head>
+
+<body>
+    <!-- Topbar Start -->
+    <div class="container-fluid bg-dark px-5">
+        <div class="row gx-4 d-none d-lg-flex">
+            <div class="col-lg-6 text-start">
+                <div class="h-100 d-inline-flex align-items-center py-3 me-4">
+                    <div class="btn-sm-square rounded-circle bg-primary me-2">
+                        <small class="fa fa-map-marker-alt text-white"></small>
+                    </div>
+                    <small>천안 동남구 대흥로 255</small>
+                </div>
+                <div class="h-100 d-inline-flex align-items-center py-3">
+                    <div class="btn-sm-square rounded-circle bg-primary me-2">
+                        <small class="fa fa-envelope-open text-white"></small>
+                    </div>
+                    <small>wnqktmvb@naver.com</small>
+                </div>
+            </div>
+            <div class="col-lg-6 text-end">
+                <div class="h-100 d-inline-flex align-items-center py-3 me-4">
+                    <div class="btn-sm-square rounded-circle bg-primary me-2">
+                        <small class="fa fa-phone-alt text-white"></small>
+                    </div>
+                    <small>010-3048-8258</small>
+                </div>
+                <div class="h-100 d-inline-flex align-items-center py-3">
+                    <div class="btn-sm-square rounded-circle bg-primary me-2">
+                        <small class="far fa-clock text-white"></small>
+                    </div>
+                    <small>Mon - Fri : 10AM - 7PM</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Topbar End -->
+
+    <!-- Menu Start -->
+    <div class="container-fluid bg-light overflow-hidden">
+        <div class="menu">
+            <div class="row" id="warning_p">
+                <div class="col-lg-4">
+                    <a href="/login?name={{name}}" class="btn btn-primary btn-lg-square rounded-circle"><i
+                        class="fa fa-arrow-left"></i></a>
+                </div>
+                <div class="col-lg-4">    
+                    <h3 class="text-center">실시간 영상</h3>  
+                </div>
+                <div class ="col-lg-4" style="text-align: center;">
+                    <button class="btn btn-primary" onclick="nofire()" style="background-color: red; color:white;">경보음 끄기</button>
+                    <button class="box" id="toggle" style="float: right;" onclick="toggle()"><i class="fas fa-circle rounded-circle" id="onoff" style="color: gray; float:left;"></i>
+                    </button><small id="status" style="margin-right:10px; float:right;"></small>
+                </div>
+            </div>
+            <div class="text-center mt-4">                
+                <img id="livevideo" src="http://3.39.178.110:5000/video" width="60%" height="60%" style="margin: 20px auto; display: block;"> 
+            </div>          
+        </div>
+    </div>
+    <script>
+        //감지 모드 초기 상태
+        const mode_text = "{{mode_result}}";
+        function mode_status(){
+            const onOffIcon = document.getElementById("onoff");
+            const toggleButton = document.getElementById("toggle");
+            const mode_name = document.getElementById("status");
+            if (mode_text == "True"){
+                onOffIcon.style.color = "blue";
+                onOffIcon.style.float = "right";
+                toggleButton.style.backgroundColor = "#4CAF50";
+                mode_name.textContent = "감지모드 ON";
+                mode_name.style.color = "#4CAF50";
+            }
+            else{
+                onOffIcon.style.color = "gray";
+                onOffIcon.style.float = "left";
+                toggleButton.style.backgroundColor = "white";
+                mode_name.textContent = "감지모드 OFF";
+                mode_name.style.color = "gray";
+            }
+        }
+        mode_status();
+    </script>
+    <script>
+        //경보음 끄기
+        function nofire(){
+            stopwarning();
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://3.39.178.110:8000/off", true);
+            //xhr.open("POST", "http://192.168.0.28:8000/off", true); // 로컬
+            xhr.send();
+        }
+    </script>
+    <script>     
+        let warning_check = false;
+        function fire_detect_load(){
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST","http://3.39.178.110:8000",true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var resultText = xhr.responseText;
+                    if (resultText === "True") {
+                            if(!warning_check){
+                                warningscreen();
+                                warning_check =true;
+                                setTimeout(() => {
+                                    stopwarning();
+                                    warning_check=false;
+                            }, 2000);
+                        }
+                    }                    
+                }
+            };
+            xhr.send();
+        }
+
+        // 1초마다 서버에서 데이터 가져오기
+        setInterval(function () {
+            fire_detect_load();                
+        }, 100);
+
+        let warning_Interval;
+        let s_color = false;
+        const warning_text = document.getElementById("livevideo");
+
+        // 화재감지 시 화면
+        function warningscreen(){
+            function startwarning(){
+                if(s_color){
+                    warning_text.style.border = "";
+                }
+                else{
+                    warning_text.style.border = "5px solid red";                
+                }
+            s_color = !s_color;
+            }
+            warning_Interval = setInterval(startwarning,1000);
+        }
+        // 화재감지 종료 시
+        function stopwarning(){
+            clearInterval(warning_Interval);
+            warning_text.style.border = "";
+        }
+    </script>
+    <script>
+        function toggle() {
+            const toggleButton = document.getElementById("toggle");
+            const onOffIcon = document.getElementById("onoff"); 
+            const mode_name = document.getElementById("status");        
+            if(onOffIcon.style.color == "gray"){
+            // 감지 모드 ON
+            onOffIcon.style.color = "blue";
+            onOffIcon.style.float = "right";
+            toggleButton.style.backgroundColor = "#4CAF50"; 
+            mode_name.textContent = "감지모드 ON";
+            mode_name.style.color = "#4CAF50";
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://3.39.178.110:8000/changemode", true);
+            //xhr.open("POST", "http://192.168.0.20:8000/changemode", true); //로컬 test
+            //xhr.send();
+            }
+            else{
+            // 감지 모드 OFF
+            onOffIcon.style.color = "gray";
+            onOffIcon.style.float = "left";
+            toggleButton.style.backgroundColor = "white";
+            mode_name.textContent = "감지모드 OFF";
+            mode_name.style.color = "gray";
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://3.39.178.110:8000/changemode", true);
+            //xhr.open("POST", "http://192.168.0.20:8000/changemode", true); // 로컬test
+            //xhr.send();
+            }
+        }        
+    </script>
+</body>
+
+</html>

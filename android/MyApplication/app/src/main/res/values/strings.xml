@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">어플이름</string>
+    <string name="msg_token_fmt">FCM Registration Token: %1$s</string>
+    <string name="default_notification_channel_id">test</string>
+    <string name = "channel_id">test</string>
+    <string-array name="spinner_array">
+        <item>최신순</item>
+    </string-array>
+    <string-array name="setting">
+        <item>비밀번호 변경</item>
+        <item>로그아웃</item>
+    </string-array>
+</resources>
