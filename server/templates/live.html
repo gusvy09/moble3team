@@ -88,7 +88,7 @@
                 </div>
             </div>
             <div class="text-center mt-4">                
-                <img id="livevideo" src="http://3.39.178.110:5000/video" width="60%" height="60%" style="margin: 20px auto; display: block;"> 
+                <img id="livevideo" src="http://:5000/video" width="60%" height="60%" style="margin: 20px auto; display: block;"> 
             </div>          
         </div>
     </div>
@@ -121,8 +121,7 @@
         function nofire(){
             stopwarning();
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "http://3.39.178.110:8000/off", true);
-            //xhr.open("POST", "http://192.168.0.28:8000/off", true); // 로컬
+            xhr.open("POST", "http://:8000/off", true);
             xhr.send();
         }
     </script>
@@ -130,7 +129,7 @@
         let warning_check = false;
         function fire_detect_load(){
             var xhr = new XMLHttpRequest();
-            xhr.open("POST","http://3.39.178.110:8000",true);
+            xhr.open("POST","http://:8000",true);
 
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
@@ -142,7 +141,7 @@
                                 setTimeout(() => {
                                     stopwarning();
                                     warning_check=false;
-                            }, 2000);
+                            }, 6000);
                         }
                     }                    
                 }
@@ -157,16 +156,16 @@
 
         let warning_Interval;
         let s_color = false;
-        const warning_text = document.getElementById("livevideo");
+        const livevideo_warning = document.getElementById("livevideo");
 
         // 화재감지 시 화면
         function warningscreen(){
             function startwarning(){
                 if(s_color){
-                    warning_text.style.border = "";
+                    livevideo_warning.style.filter = "";
                 }
                 else{
-                    warning_text.style.border = "5px solid red";                
+                    livevideo_warning.style.filter = "opacity(0.5) drop-shadow(0 0 0 red)";                
                 }
             s_color = !s_color;
             }
@@ -175,7 +174,7 @@
         // 화재감지 종료 시
         function stopwarning(){
             clearInterval(warning_Interval);
-            warning_text.style.border = "";
+            livevideo_warning.style.filter = "";
         }
     </script>
     <script>
@@ -191,9 +190,8 @@
             mode_name.textContent = "감지모드 ON";
             mode_name.style.color = "#4CAF50";
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "http://3.39.178.110:8000/changemode", true);
-            //xhr.open("POST", "http://192.168.0.20:8000/changemode", true); //로컬 test
-            //xhr.send();
+            xhr.open("POST", "http://:8000/changemode", true);
+            xhr.send();
             }
             else{
             // 감지 모드 OFF
@@ -203,9 +201,8 @@
             mode_name.textContent = "감지모드 OFF";
             mode_name.style.color = "gray";
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "http://3.39.178.110:8000/changemode", true);
-            //xhr.open("POST", "http://192.168.0.20:8000/changemode", true); // 로컬test
-            //xhr.send();
+            xhr.open("POST", "http://:8000/changemode", true);            
+            xhr.send();
             }
         }        
     </script>
